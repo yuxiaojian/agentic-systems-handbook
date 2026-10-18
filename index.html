@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentic Systems Handbook</title>
+<style>
+:root {
+  --bg: #0d1017; --panel: #151924; --panel2: #1c2130; --ink: #e8ebf1; --muted: #8e97a8; --line: #252b39;
+  --accent: #7cc4ff; --gold: #f0c560;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; }
+a { color: var(--accent); text-decoration: none; }
+header { position: fixed; inset: 0 0 auto 0; height: 48px; display: flex; align-items: center; gap: 8px;
+  padding: 0 16px; background: rgba(13,16,23,.94); border-bottom: 1px solid var(--line); z-index: 10; }
+header .brand { color: var(--ink); font-weight: 650; }
+header .spacer { flex: 1; }
+button { background: var(--panel2); color: var(--gold); border: 1px solid #6b5a2a; border-radius: 7px;
+  padding: 5px 12px; font: inherit; font-size: 14px; font-weight: 650; min-width: 52px; cursor: pointer; }
+main { max-width: 1100px; margin: 0 auto; padding: 96px 40px 60px; }
+h1 { font-size: 50px; line-height: 1.15; margin: 4px 0 12px; }
+.lead { color: #c4cad6; font-size: 19px; margin: 0 0 14px; max-width: 820px; }
+.note { color: var(--muted); font-size: 15px; max-width: 820px; margin: 0 0 30px; }
+.sec-h { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; margin: 20px 0 12px; }
+.guides { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 16px; }
+.guide { display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  padding: 20px 22px; color: var(--ink); transition: border-color .15s, transform .15s; }
+.guide:hover { border-color: #4a5570; transform: translateY(-2px); }
+.guide .bar { height: 4px; width: 48px; border-radius: 2px; background: var(--c); }
+.guide .tag { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; margin-top: 14px; }
+.guide b { font-size: 22px; margin: 2px 0 8px; }
+.guide p { margin: 0 0 12px; color: #c4cad6; font-size: 15px; }
+.guide ul { margin: 0 0 16px; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.guide li { font-size: 12.5px; color: #c4cad6; background: var(--panel2); border: 1px solid #2c3345; border-radius: 999px; padding: 2px 10px; }
+.guide .go { margin-top: auto; color: var(--accent); font-weight: 600; font-size: 14.5px; }
+footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; }
+@media (max-width: 760px) {
+  main { padding: 72px 16px 40px; }
+  h1 { font-size: 34px; }
+  .guides { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header>
+  <a href="./" class="brand" id="brand"></a>
+  <span class="spacer"></span>
+  <button id="lang"></button>
+</header>
+<main id="view"></main>
+
+<script>
+const TXT = {
+  en: {
+    brand: "Agentic Systems Handbook", lang: "中文", langTitle: "切换到中文",
+    lead: "Interactive explainers for the building blocks of agentic systems: how they talk, how they learn, and what actually happens on the wire.",
+    note: "Each guide is a small static site with diagrams you can play with, available in English and Chinese. Use ← → inside a guide to page through it.",
+    guidesH: "Guides", open: "Open the guide →",
+    footer: "MIT License",
+    guides: [
+      { href: "gpt-live/", c: "#7cc4ff", tag: "Voice agents · 13 pages", title: "GPT Live, explained",
+        text: "How OpenAI's full-duplex voice model keeps talking with people while a backend does the thinking, and what happens when it hands work to your app.",
+        topics: ["Full duplex", "Client delegation", "Fillers & latency", "Memory", "Session replay"] },
+      { href: "fine-tuning/", c: "#f0c560", tag: "Model training · 8 pages", title: "Fine-tuning, explained",
+        text: "What supervised fine-tuning teaches, why LoRA trains only a tiny patch, and how a fine-tuned Llama 3.1 ends up running in Ollama.",
+        topics: ["SFT", "LoRA & QLoRA", "Llama 3.1 8B", "Merge & quantize", "Ollama"] },
+    ],
+  },
+  zh: {
+    brand: "智能体系统手册", lang: "EN", langTitle: "Switch to English",
+    lead: "用可交互的图解讲清智能体系统的基本构件：它们怎么对话、怎么学习，以及线路上到底发生了什么。",
+    note: "每个专题都是一个小型静态网站，图表可以动手操作，提供中英文两种语言。在专题内用 ← → 翻页。",
+    guidesH: "专题", open: "打开专题 →",
+    footer: "MIT 许可证",
+    guides: [
+      { href: "gpt-live/", c: "#7cc4ff", tag: "语音智能体 · 13 页", title: "GPT Live 图解",
+        text: "OpenAI 的全双工语音模型如何一边和人聊天、一边让后台去思考，以及它把任务交给你的应用时到底发生了什么。",
+        topics: ["全双工", "客户端委派", "填充语与延迟", "记忆", "会话回放"] },
+      { href: "fine-tuning/", c: "#f0c560", tag: "模型训练 · 8 页", title: "微调，讲清楚",
+        text: "监督微调（SFT）教了什么，LoRA 为什么只训练一小块补丁，以及微调后的 Llama 3.1 如何在 Ollama 里跑起来。",
+        topics: ["SFT", "LoRA 与 QLoRA", "Llama 3.1 8B", "合并与量化", "Ollama"] },
+    ],
+  },
+};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+let LANG = (() => {
+  const q = new URLSearchParams(location.search).get("lang");
+  if (q === "en" || q === "zh") return q;
+  try { const s = localStorage.getItem("handbook-lang"); if (s === "en" || s === "zh") return s; } catch (e) {}
+  return (navigator.language || "").toLowerCase().startsWith("zh") ? "zh" : "en";
+})();
+function render() {
+  const t = TXT[LANG];
+  document.documentElement.lang = LANG === "zh" ? "zh-CN" : "en";
+  document.title = t.brand;
+  document.getElementById("brand").textContent = t.brand;
+  const b = document.getElementById("lang");
+  b.textContent = t.lang; b.title = t.langTitle;
+  // pass the language on, so each guide opens in the same language
+  document.getElementById("view").innerHTML = `<h1>${esc(t.brand)}</h1><p class="lead">${esc(t.lead)}</p><p class="note">${esc(t.note)}</p>
+    <div class="sec-h">${esc(t.guidesH)}</div>
+    <div class="guides">${t.guides.map(g => `<a class="guide" href="${g.href}index.html?lang=${LANG}" style="--c:${g.c}">
+      <div class="bar"></div><div class="tag">${esc(g.tag)}</div><b>${esc(g.title)}</b><p>${esc(g.text)}</p>
+      <ul>${g.topics.map(x => `<li>${esc(x)}</li>`).join("")}</ul><span class="go">${esc(t.open)}</span></a>`).join("")}</div>
+    <footer>${esc(t.footer)}</footer>`;
+}
+document.getElementById("lang").onclick = () => {
+  LANG = LANG === "en" ? "zh" : "en";
+  try { localStorage.setItem("handbook-lang", LANG); } catch (e) {}
+  render();
+};
+render();
+</script>
+</body>
+</html>
