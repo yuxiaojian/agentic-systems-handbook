@@ -21,6 +21,8 @@ code { font: 13.5px ui-monospace, SFMono-Regular, Menlo, monospace; background: 
 header { position: fixed; inset: 0 0 auto 0; height: 48px; display: flex; align-items: center; gap: 8px;
   padding: 0 16px; background: rgba(13,16,23,.94); border-bottom: 1px solid var(--line); z-index: 10; }
 header .brand { color: var(--ink); font-weight: 650; }
+header .up { color: var(--muted); font-size: 18px; padding: 0 10px 0 2px; margin-right: 2px; border-right: 1px solid var(--line); line-height: 24px; }
+header .up:hover { color: var(--ink); }
 header .spacer { flex: 1; }
 header .hint { color: var(--muted); font-size: 12px; margin-right: 8px; }
 button { background: var(--panel2); color: var(--ink); border: 1px solid #323a4c; border-radius: 7px;
